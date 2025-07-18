@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
   const employeeForm = document.getElementById("employeeForm");
   const employeeList = document.getElementById("employeeList");
+// Only show employee list if you're the admin
+const isAdmin = confirm("Are you an admin? Click OK if yes, Cancel if you're just submitting a form.");
 
   const baseURL = "https://employee-management-system-2-cis4.onrender.com";
 
@@ -21,7 +23,18 @@ document.addEventListener("DOMContentLoaded", () => {
           `;
           employeeList.appendChild(row);
         });
-
+if (isAdmin) {
+        const deleteButtons = document.querySelectorAll(".deleteBtn");
+        deleteButtons.forEach(button => {
+          button.addEventListener("click", () => {
+            const id = button.getAttribute("data-id");
+            deleteEmployee(id);
+          });
+        });
+      }
+    })
+    .catch(err => console.error("Load error:", err));
+}
         // Add delete button events
         const deleteButtons = document.querySelectorAll(".deleteBtn");
         deleteButtons.forEach(button => {
