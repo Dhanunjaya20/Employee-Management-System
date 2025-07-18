@@ -1,8 +1,6 @@
 {
   "employees": [
     {
-  "employees": [
-    {
       "id": 1,
       "name": "Alice Johnson",
       "position": "Software Engineer",
@@ -12,10 +10,7 @@
       "id": 2,
       "name": "Bob Smith",
       "position": "HR Manager",
-      "department": "Human Resources"
+      "department": "HR"
     }
-  ]
-}
-
   ]
 }
