@@ -1,9 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
   const employeeForm = document.getElementById("employeeForm");
   const employeeList = document.getElementById("employeeList");
-const baseURL = "https://employee-management-system-2-cis4.onrender.com";
 
-  // Load all employees
+  const baseURL = "https://employee-management-system-2-cis4.onrender.com";
+
+  // Ask if user is the admin
+  const isAdmin = confirm("Are you the admin? Click OK if yes.");
+
+  // Load employees (for everyone)
   function loadEmployees() {
     fetch(`${baseURL}/employees`)
       .then(res => res.json())
@@ -16,24 +20,25 @@ const baseURL = "https://employee-management-system-2-cis4.onrender.com";
             <td>${employee.role}</td>
             <td>${employee.department}</td>
             <td>${employee.salary}</td>
-            <td><button class="deleteBtn" data-id="${employee.id}">Delete</button></td>
+            ${isAdmin ? `<td><button class="deleteBtn" data-id="${employee.id}">Delete</button></td>` : "<td></td>"}
           `;
           employeeList.appendChild(row);
         });
 
-        // Add delete button events
-        const deleteButtons = document.querySelectorAll(".deleteBtn");
-        deleteButtons.forEach(button => {
-          button.addEventListener("click", () => {
-            const id = button.getAttribute("data-id");
-            deleteEmployee(id);
+        // Add delete buttons if admin
+        if (isAdmin) {
+          document.querySelectorAll(".deleteBtn").forEach(button => {
+            button.addEventListener("click", () => {
+              const id = button.getAttribute("data-id");
+              deleteEmployee(id);
+            });
           });
-        });
+        }
       })
       .catch(err => console.error("Error loading employees:", err));
   }
 
-  // Delete an employee
+  // Delete employee (admin only)
   function deleteEmployee(id) {
     fetch(`${baseURL}/employees/${id}`, {
       method: "DELETE"
@@ -42,19 +47,14 @@ const baseURL = "https://employee-management-system-2-cis4.onrender.com";
       .catch(err => console.error("Error deleting employee:", err));
   }
 
-  // Add new employee
+  // Form submit (open to everyone)
   employeeForm.addEventListener("submit", event => {
     event.preventDefault();
 
-    const name = document.getElementById("name").value.trim();
-    const role = document.getElementById("role").value.trim();
-    const department = document.getElementById("department").value.trim();
-    const salary = parseFloat(document.getElementById("salary").value);
-
-    if (!name || !role || !department || isNaN(salary)) {
-      alert("Please fill all fields correctly.");
-      return;
-    }
+    const name = document.getElementById("name").value;
+    const role = document.getElementById("role").value;
+    const department = document.getElementById("department").value;
+    const salary = document.getElementById("salary").value;
 
     const employee = { name, role, department, salary };
 
@@ -65,11 +65,11 @@ const baseURL = "https://employee-management-system-2-cis4.onrender.com";
     })
       .then(() => {
         employeeForm.reset();
-        loadEmployees();
+        loadEmployees(); // reload list after adding
       })
-      .catch(err => console.error("Error adding employee:", err));
+      .catch(err => console.error("Add error:", err));
   });
 
-  // Initial load
+  // Load employees on page load
   loadEmployees();
 });
