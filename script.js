@@ -1,10 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const employeeForm = document.getElementById("employeeForm");
   const employeeList = document.getElementById("employeeList");
-// Only show employee list if you're the admin
-const isAdmin = confirm("Are you an admin? Click OK if yes, Cancel if you're just submitting a form.");
-
-  const baseURL = "https://employee-management-system-2-cis4.onrender.com";
+const baseURL = "https://employee-management-system-2-cis4.onrender.com";
 
   // Load all employees
   function loadEmployees() {
