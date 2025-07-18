@@ -2,12 +2,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const employeeForm = document.getElementById("employeeForm");
   const employeeList = document.getElementById("employeeList");
 
-  // ✅ Function to load all employees
+  const baseURL = "https://employee-management-system-2-cis4.onrender.com";
+
+  // Load all employees
   function loadEmployees() {
-    fetch("http://localhost:3000/employees")
+    fetch(`${baseURL}/employees`)
       .then(res => res.json())
       .then(data => {
-        employeeList.innerHTML = ""; // clear previous
+        employeeList.innerHTML = "";
         data.forEach(employee => {
           const row = document.createElement("tr");
           row.innerHTML = `
@@ -20,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
           employeeList.appendChild(row);
         });
 
-        // ✅ Add event listeners to all Delete buttons
+        // Add delete button events
         const deleteButtons = document.querySelectorAll(".deleteBtn");
         deleteButtons.forEach(button => {
           button.addEventListener("click", () => {
@@ -28,46 +30,45 @@ document.addEventListener("DOMContentLoaded", () => {
             deleteEmployee(id);
           });
         });
-      });
+      })
+      .catch(err => console.error("Error loading employees:", err));
   }
 
-  // ✅ Function to delete employee
+  // Delete an employee
   function deleteEmployee(id) {
-    fetch(`http://localhost:3000/employees/${id}`, {
+    fetch(`${baseURL}/employees/${id}`, {
       method: "DELETE"
     })
-      .then(() => loadEmployees()) // reload list
-      .catch(err => console.error("Delete error:", err));
+      .then(() => loadEmployees())
+      .catch(err => console.error("Error deleting employee:", err));
   }
 
-  // ✅ Handle Add Employee form
+  // Add new employee
   employeeForm.addEventListener("submit", event => {
     event.preventDefault();
 
-    const name = document.getElementById("name").value;
-    const role = document.getElementById("role").value;
-    const department = document.getElementById("department").value;
-    const salary = document.getElementById("salary").value;
+    const name = document.getElementById("name").value.trim();
+    const role = document.getElementById("role").value.trim();
+    const department = document.getElementById("department").value.trim();
+    const salary = parseFloat(document.getElementById("salary").value);
 
-    const employee = {
-      name,
-      role,
-      department,
-      salary
-    };
+    if (!name || !role || !department || isNaN(salary)) {
+      alert("Please fill all fields correctly.");
+      return;
+    }
 
-    fetch("http://localhost:3000/employees", {
+    const employee = { name, role, department, salary };
+
+    fetch(`${baseURL}/employees`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(employee)
     })
       .then(() => {
         employeeForm.reset();
         loadEmployees();
       })
-      .catch(err => console.error("Add error:", err));
+      .catch(err => console.error("Error adding employee:", err));
   });
 
   // Initial load
