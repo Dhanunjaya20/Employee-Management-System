@@ -20,18 +20,7 @@ const baseURL = "https://employee-management-system-2-cis4.onrender.com";
           `;
           employeeList.appendChild(row);
         });
-if (isAdmin) {
-        const deleteButtons = document.querySelectorAll(".deleteBtn");
-        deleteButtons.forEach(button => {
-          button.addEventListener("click", () => {
-            const id = button.getAttribute("data-id");
-            deleteEmployee(id);
-          });
-        });
-      }
-    })
-    .catch(err => console.error("Load error:", err));
-}
+
         // Add delete button events
         const deleteButtons = document.querySelectorAll(".deleteBtn");
         deleteButtons.forEach(button => {
