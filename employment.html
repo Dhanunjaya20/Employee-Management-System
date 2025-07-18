@@ -5,6 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Employee Management System</title>
   <link rel="stylesheet" href="styles.css" />
+  <head>
+  <meta charset="UTF-8">
+  <title>Employee Management System</title>
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- 🔐 Simple password prompt -->
+  <script>
+    const password = prompt("Enter password to access this page:");
+    if (password !== "mySecret123") {
+      alert("Access denied!");
+      window.location.href = "https://www.google.com";
+    }
+  </script>
+</head>
+
 </head>
 <body>
 
