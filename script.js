@@ -1,9 +1,12 @@
+// ✅ UPDATED script.js with authentication control (frontend)
 document.addEventListener("DOMContentLoaded", () => {
   const employeeForm = document.getElementById("employeeForm");
   const employeeList = document.getElementById("employeeList");
 
-
   const baseURL = "https://employee-management-system-2-cis4.onrender.com";
+
+  // 🔐 Admin Key (you can change this to anything secure)
+  const ADMIN_KEY = "admin123";
 
   // Load all employees
   function loadEmployees() {
@@ -18,18 +21,16 @@ document.addEventListener("DOMContentLoaded", () => {
             <td>${employee.role}</td>
             <td>${employee.department}</td>
             <td>${employee.salary}</td>
-            <td><button class="deleteBtn" data-id="${employee.id}">Delete</button></td>
+            <td>
+              <button class="deleteBtn" data-id="${employee.id}">Delete</button>
+            </td>
           `;
           employeeList.appendChild(row);
         });
 
-        // Add delete button events
-        const deleteButtons = document.querySelectorAll(".deleteBtn");
-        deleteButtons.forEach(button => {
-          button.addEventListener("click", () => {
-            const id = button.getAttribute("data-id");
-            deleteEmployee(id);
-          });
+        // Hide delete buttons by default
+        document.querySelectorAll(".deleteBtn").forEach(button => {
+          button.style.display = "none";
         });
       })
       .catch(err => console.error("Error loading employees:", err));
@@ -71,6 +72,25 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(err => console.error("Error adding employee:", err));
   });
+
+  // ✅ Prompt for admin access
+  const isAdmin = prompt("Enter admin key to manage employees:") === ADMIN_KEY;
+
+  if (isAdmin) {
+    // If admin, re-show delete buttons
+    setTimeout(() => {
+      document.querySelectorAll(".deleteBtn").forEach(button => {
+        button.style.display = "inline-block";
+        button.addEventListener("click", () => {
+          const id = button.getAttribute("data-id");
+          const confirmDelete = confirm("Are you sure you want to delete this employee?");
+          if (confirmDelete) {
+            deleteEmployee(id);
+          }
+        });
+      });
+    }, 1000); // Delay to allow DOM to update
+  }
 
   // Initial load
   loadEmployees();
