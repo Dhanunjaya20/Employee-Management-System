@@ -1,3 +1,4 @@
+/* Reset & Base Styles */
 * {
   margin: 0;
   padding: 0;
@@ -19,12 +20,14 @@ body {
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
+/* Headings */
 h1, h2 {
   text-align: center;
   color: #333;
   margin-bottom: 20px;
 }
 
+/* Form Styles */
 form {
   display: flex;
   flex-wrap: wrap;
@@ -54,15 +57,11 @@ form button:hover {
   background: #0056b3;
 }
 
-.employee-table {
-  overflow-x: auto;
-}
-
+/* Table Styles */
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
-  min-width: 600px; /* Prevent table from shrinking on small screens */
 }
 
 table, th, td {
@@ -92,23 +91,31 @@ td button:hover {
   background: darkred;
 }
 
-/* ✅ Responsive adjustments */
+/* Responsive Design for Mobile */
 @media (max-width: 768px) {
- .container{
-   padding:15px;  
-form {
-    flex-direction: column;
-    gap:12px;
+  .container {
+    padding: 15px;
   }
 
-  form input,
-  form button {
+  form {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  form input, form button {
     width: 100%;
-font-size:14px;
-padding:10px;
+    font-size: 14px;
+    padding: 10px;
   }
 
   table {
-    min-width: 100%;
+    font-size: 13px;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  th, td {
+    padding: 8px;
   }
 }
